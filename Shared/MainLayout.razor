@@ -1,0 +1,30 @@
+﻿@inherits LayoutComponentBase
+
+<div class="page">
+    <CascadingValue Name="NavBarRefresh" Value="@stateChanged">
+        <div class="sidebar">
+            <NavMenu @ref="navMenu" />
+        </div>
+
+        <div class="main">
+            @Body
+        </div>
+    </CascadingValue>
+</div>
+
+
+@code {
+    private UpwardStateChanged stateChanged = new UpwardStateChanged();
+
+    private NavMenu navMenu;
+
+    protected override void OnInitialized()
+    {
+        stateChanged.RefreshRequested += RefreshMe;
+    }
+
+    private void RefreshMe()
+    {
+        navMenu.RefreshMe();
+    }
+}

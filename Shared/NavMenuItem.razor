@@ -1,0 +1,92 @@
+<li class="nav-item px-3">
+    <div @onclick="ToggleCollapse">
+        @if (Children.Count > 0)
+        {
+        <NavLink class="nav-link">
+            <div class="col-10 text-truncate" text-align="left">
+                @if(CssClass != "")
+                 {
+                     <span class="oi @CssClass" aria-hidden="true"></span>
+                 }
+                @DisplayName
+            </div>
+        </NavLink>
+        }
+        else
+        {
+        <NavLink class="nav-link " href="@HrefLink">
+            <div class="col-10 text-truncate" text-align="left">
+                @if(CssClass != ""){
+                    <span class="oi @CssClass" aria-hidden="true"></span>
+                 }
+                @DisplayName
+            </div>
+        </NavLink>
+        }
+    </div>
+    @if (ShowChildren)
+    {
+        @foreach (var navMenuItem in Children)
+        {
+        <NavMenuItem Id="@navMenuItem.Id"
+            DisplayName="@navMenuItem.DisplayName" 
+            HrefLink="@navMenuItem.HrefLink" 
+            ShowChildren="@navMenuItem.ShowChildren"
+            Children="@navMenuItem.Children"
+            CssClass="@navMenuItem.CssClass"     
+         />
+        }
+    }
+</li>
+
+@code {
+    [Parameter]
+    public int Id {get; set;}
+
+    [Parameter]
+    public string DisplayName { get; set; }
+
+    [Parameter]
+    public string HrefLink { get; set; }
+
+    [Parameter]
+    public bool ShowChildren { get; set; }
+
+    [Parameter]
+    public string CssClass { get; set; }
+
+    [Parameter]
+    public List<NavMenuItem> Children { get; set; }
+
+    public NavMenuItem()
+    {
+
+    }
+
+    public NavMenuItem(string displayName, string hrefLink = "", int id = 0, string cssClass = "", bool showChildren = false, List<NavMenuItem> children = null)
+    {
+        Id = id;
+        DisplayName = displayName;
+        HrefLink = hrefLink;
+        ShowChildren = showChildren;
+        CssClass = cssClass;
+        if (children == null)
+        {
+            Children = new List<NavMenuItem>();
+        }
+        else
+        {
+            Children = children;
+        }
+    }
+    public void AddChild(NavMenuItem navMenuItem)
+    {
+        Children.Add(navMenuItem);
+    }
+
+    public void ToggleCollapse()
+    {
+        ShowChildren = !ShowChildren;
+    }
+}
+
